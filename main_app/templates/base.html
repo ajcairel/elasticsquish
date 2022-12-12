@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Squish Collector</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+
+  <nav class="nav-wrapper">
+    <a href="#" class="sidenav-trigger" data-target="mobile-links">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul class="left">
+      <li class="brand-logo" id="logo">&nbsp;&nbsp;</a>Squish Collector</li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="{% url 'about' %}">About</a></li>
+      {% if user.is_authenticated %}
+        <!-- <li><a href="{% url 'squads_create' %}">Add A Squad</a></li> -->
+        <!-- <li><a href="{% url 'squads_index' %}">View All Squads</a></li> -->
+        <li><a href="{% url 'squish_create' %}">Add Squishmallow</a></li>
+        <li><a href="{% url 'index' %}">View My Squishes</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="{% url 'about' %}">About</a></li>
+      {% if user.is_authenticated %}
+        <!-- <li><a href="{% url 'squads_create' %}">Add A Squad</a></li> -->
+        <!-- <li><a href="{% url 'squads_index' %}">View All Squads</a></li> -->
+        <li><a href="{% url 'squish_create' %}">Add Squishmallow</a></li>
+        <li><a href="{% url 'index' %}">View My Squishes</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+  </ul>
+
+
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+  <footer class="page-footer">
+    <div class="center">
+      <i class="material-icons">cruelty_free</i>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+    })
+  
+  </script>
+</body>
+</html>

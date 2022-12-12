@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+  <h1 class="upload">{{squish.get_size_display}} {{ squish.name }}</h1>
+
+</div>
+<div class="card">
+
+  <div class="row">
+    <div class="col s12">
+      {% for photo in squish.photo_set.all %}
+        <img class="responsive-img card-panel" src="{{photo.url}}" alt="squish-photo">
+      {% empty %}
+        <div class="card-panel purple-text center-align">No Photos Uploaded</div>
+      {% endfor %}
+      <form action="{% url 'add_photo' squish.id %}" enctype="multipart/form-data" method="POST" class="card-panel">
+        <div id="acquire">
+          {% csrf_token %}
+  
+          <input id="acquire" type="file" name="photo-file">
+          <br><br>
+          <input type="submit" class="btn" value="Upload Photo" id="upload">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <div class="card">
+      <div class="card-content purple-text" id="acquire">
+          <p>Acquired On: {{ squish.date_acquired }}</p>
+        </div>
+        <div class="card-action">
+          <div id="acquire">
+            <a class="btn" id="upload" href="{% url 'squish_update' squish.id %}">Edit</a>
+            <a class="btn" id="upload" href="{% url 'squish_delete' squish.id %}">Delete</a>
+        </div>
+
+          </div>
+    </div>
+  </div>
+</div>
+<hr>
+<!-- <div class="row">
+  <div class="col s6">
+    <h3>{{ squish.name }}'s Squads</h3>
+    {% if squish.squads.count %}
+      {% for squad in squish.squads.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+             {{ squad.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_squad' squish.id squad.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Remove</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Squads Yet!</h5>
+    {% endif %}
+  </div>
+  <div class="col s6">
+    <h3>Available Squads</h3>
+    {% if squads.count %}
+      {% for squad in squads.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ squad.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_squad' squish.id squad.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{squish.name}} has no available squads! </h5>
+    {% endif %}
+  </div>
+</div> -->
+
+<script>
+  const selectEl = document.getElementById('id_size');
+  M.FormSelect.init(selectEl)
+</script>
+{% endblock %}

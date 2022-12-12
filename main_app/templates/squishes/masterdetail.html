@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Squish Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+          <span class="card-title">{{ squish.name }}</span>
+          <p>Squishdate: {{ squish.squish_date }}</p>
+        </div>
+        <div class="card-action">
+          <a href="{% url 'squish_update' squish.id %}">Edit</a>
+          <a href="{% url 'squish_delete' squish.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="col s6">
+    <form class="card-panel teal accent-2" action="{% url 'add_size' squish.id %}"method="POST">
+      {% csrf_token %}
+      {{ size_form.as_p }}
+      <input type="submit" class="btn" value="Add Style">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Style's Owned</th></tr>
+      </thead>
+      <tbody>
+        {% for style in squish.style_set.all %}
+          <tr>
+            <td>{{style.get_size_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ squish.name }}'s Squads</h3>
+    {% if squish.squads.count %}
+      {% for squad in squish.squads.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+             {{ squad.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_squad' squish.id squad.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Remove</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Squads Yet!</h5>
+    {% endif %}
+  </div>
+  <!-- Available squads will come after this line -->
+  <div class="col s6">
+    <h3>Available Squads</h3>
+    {% if squads.count %}
+      {% for squad in squads.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              {{ squad.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_squad' squish.id squad.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{squish.name}} has no available squads! </h5>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const selectEl = document.getElementById('id_size');
+  M.FormSelect.init(selectEl)
+</script>
+{% endblock %}
